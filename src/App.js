@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import FileUpload from './components/FileUpload';
+import SummaryResult from './components/SummaryResult';
+import { Container, Typography } from '@mui/material';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [summary, setSummary] = useState('');
+
+    return (
+        <Container maxWidth="md" style={{ marginTop: '100px' }}>
+            <Typography variant="h3" align="center" gutterBottom>
+                PDF Summarizer
+            </Typography>
+            <FileUpload setSummary={setSummary} />
+            <SummaryResult summary={summary} />
+        </Container>
+    );
 }
 
 export default App;
