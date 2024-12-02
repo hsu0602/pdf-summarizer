@@ -1,9 +1,25 @@
-const fs = require('fs');
-const pdfParse = require('pdf-parse');
+const { spawn } = require('child_process');
+const path = require('path');
 
-const extractText = (pdfPath) => {
-    const dataBuffer = fs.readFileSync(pdfPath);
-    return pdfParse(dataBuffer).then(data => data.text);
-};
+function extractTextWithPython(pdfPath) {
+    return new Promise((resolve, reject) => {
+        const scriptPath = path.join(__dirname, 'extract_text.py');
+        const pythonProcess = spawn('python', [scriptPath, pdfPath]);
 
-module.exports = extractText;
+        let output = '';
+        pythonProcess.stdout.on('data', (data) => {
+            output += data.toString();
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            console.error('Error:', data.toString());
+        });
+
+        pythonProcess.on('close', (code) => {
+            if (code === 0) resolve(output.trim());
+            else reject(new Error(`Process exited with code ${code}`));
+        });
+    });
+}
+
+module.exports = extractTextWithPython;

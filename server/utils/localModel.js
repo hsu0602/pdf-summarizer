@@ -4,7 +4,7 @@ const path = require('path');
 const generateSummary = (text) => {
     return new Promise((resolve, reject) => {
         const scriptPath = path.join(__dirname, 'generate_summary.py');
-        const pythonProcess = spawn('python', [scriptPath, text]);
+        const pythonProcess = spawn('python3', [scriptPath, text]);
 
         let result = '';
         pythonProcess.stdout.on('data', (data) => {
